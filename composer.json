@@ -1,0 +1,15 @@
+{
+    "name": "jscrobinson/laravel-repositories",
+    "description": "Repositories layer for Laravel 5+",
+    "license": "BSD-4-Clause",
+    "authors": [
+        {
+            "name": "Jim Robinson",
+            "email": "jscrobinson@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^6.0"
+    }
+}
