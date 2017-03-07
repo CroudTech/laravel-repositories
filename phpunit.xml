@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="tests/bootstrap/bootstrap.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         syntaxCheck="false"
+         memoryLimit="2G"
+         stopOnError="true"
+         stopOnFailure="true"
+         verbose="true">
+    <testsuites>
+        <testsuite name="PackageTests">
+            <directory>./tests/</directory>
+        </testsuite>
+    </testsuites>
+    <groups>
+        <exclude>
+            <group>Incomplete</group>
+        </exclude>
+    </groups>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src</directory>
+            <exclude>
+                <directory suffix=".php">./vendor</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>
