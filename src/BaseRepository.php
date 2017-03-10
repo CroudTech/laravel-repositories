@@ -118,4 +118,26 @@ abstract class BaseRepository implements RepositoryContract
 
         return $this->query = $model->newQuery();
     }
+
+    /**
+     * Get the query object
+     *
+     * @method query
+     * @return QueryBuilder
+     */
+    public function query() : QueryBuilder
+    {
+        return $this->query;
+    }
+
+    /**
+     * Generate a new query object removing all existing constraints
+     *
+     * @method clearQuery
+     * @return QueryBuilder
+     */
+    public function clearQuery() : QueryBuilder
+    {
+        return $this->makeQuery();
+    }
 }
