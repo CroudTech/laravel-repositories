@@ -1,5 +1,5 @@
 <?php
-namespace Croud\Repositories\Exceptions;
+namespace CroudTech\Repositories\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;

@@ -2,11 +2,11 @@
   'providers' => 
   array (
     0 => 'Illuminate\\Cache\\CacheServiceProvider',
-    1 => 'Croud\\Repositories\\Providers\\RepositoryServiceProvider',
+    1 => 'CroudTech\\Repositories\\Providers\\RepositoryServiceProvider',
   ),
   'eager' => 
   array (
-    0 => 'Croud\\Repositories\\Providers\\RepositoryServiceProvider',
+    0 => 'CroudTech\\Repositories\\Providers\\RepositoryServiceProvider',
   ),
   'deferred' => 
   array (

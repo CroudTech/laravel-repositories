@@ -1,11 +1,11 @@
 <?php
-use \Croud\RepositoryTests\Repositories\Contracts\UserRepositoryContract;
-use \Croud\RepositoryTests\Repositories\UserRepository;
+use \CroudTech\RepositoryTests\Repositories\Contracts\UserRepositoryContract;
+use \CroudTech\RepositoryTests\Repositories\UserRepository;
 
 return [
     'providers' => [
         Illuminate\Cache\CacheServiceProvider::class,
-        Croud\Repositories\Providers\RepositoryServiceProvider::class,
+        CroudTech\Repositories\Providers\RepositoryServiceProvider::class,
     ],
 
     'repositories' => [

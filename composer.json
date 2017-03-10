@@ -10,10 +10,10 @@
     ],
     "autoload": {
         "psr-4": {
-            "Croud\\Repositories\\": "src/",
-            "Croud\\RepositoryTests\\": "tests/",
-            "Croud\\RepositoryTests\\Models\\": "tests/testapp/models",
-            "Croud\\RepositoryTests\\Repositories\\": "tests/testapp/repositories"
+            "CroudTech\\Repositories\\": "src/",
+            "CroudTech\\RepositoryTests\\": "tests/",
+            "CroudTech\\RepositoryTests\\Models\\": "tests/testapp/models",
+            "CroudTech\\RepositoryTests\\Repositories\\": "tests/testapp/repositories"
         }
     },
     "require": {
