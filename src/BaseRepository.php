@@ -6,6 +6,8 @@ use \Croud\Repositories\Contracts\RepositoryContract;
 use \Illuminate\Contracts\Container\Container as ContainerContract;
 use \Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use \Illuminate\Database\Eloquent\Model;
+use \Illuminate\Pagination\AbstractPaginator as Paginator;
+use \Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class BaseRepository implements RepositoryContract
 {
@@ -64,33 +66,111 @@ abstract class BaseRepository implements RepositoryContract
      */
     public function create(array $data) : Model
     {
-        $class = $this->getModelName();
-        return $class::create($data);
+        $model_class = $this->getModelName();
+        return $model_class::create($data);
     }
 
+    /**
+     * Find a record by it's ID
+     *
+     * @method find
+     * @param  integer
+     * @return Model | null
+     */
+    public function find($id)
+    {
+        $model_class = $this->getModelName();
+        return $model_class::find($id);
+    }
+
+    /**
+     * Find a record by a custom field
+     *
+     * @method findBy
+     * @param  string $field   The field to search by
+     * @param  mixed $value    The field value
+     * @return Model | null
+     */
+    public function findBy($field, $value)
+    {
+        $model_class = $this->getModelName();
+        return $model_class::where($field, $value)->first();
+    }
+
+    /**
+     * Update a record
+     *
+     * @method update
+     * @param  $id          The ID of the record to update
+     * @return boolean
+     * @throws ModelNotFoundException
+     */
+    public function update($id, array $data)
+    {
+        if ($record = $this->find($id)) {
+            return $record->update($data);
+        } else {
+            $model_class = $this->getModelName();
+            throw new ModelNotFoundException('Model not found for ID ' . $id . ' on table ' . (new $model_class)->getTable());
+        }
+    }
+
+    /**
+     * Delete a record by ID
+     *
+     * @method delete
+     * @param  integer $id The ID of the record
+     * @return boolean
+     */
     public function delete($id)
     {
-
+        return $this->find($id)->delete();
     }
 
-    public function find($id, $columns = ['*'])
+    /**
+     * Standard Paginator
+     *
+     * @method paginate
+     * @param  integer  $perPage The number of items per page
+     * @return [type]            [description]
+     */
+    public function paginate($perPage = 20) : Paginator
     {
-
+        return $this->query()->paginate($perPage);
     }
 
-    public function findBy($field, $value, $columns = ['*'])
+    /**
+     * Simple Paginator
+     *
+     * @method simplePaginate
+     * @param  integer  $perPage The number of items per page
+     * @return [type]            [description]
+     */
+    public function simplePaginate($perPage = 20) : Paginator
     {
-
+        return $this->query()->simplePaginate($perPage);
     }
 
-    public function paginate($perPage = 20, $columns = ['*'])
+    /**
+     * Get the query object
+     *
+     * @method query
+     * @return QueryBuilder
+     */
+    public function query() : QueryBuilder
     {
-
+        return $this->query;
     }
 
-    public function update(array $data, $id)
+    /**
+     * Generate a new query object removing all existing constraints
+     *
+     * @method clearQuery
+     * @return QueryBuilder
+     */
+    public function clearQuery() : QueryBuilder
     {
-
+        return $this->makeQuery();
     }
 
     /**
