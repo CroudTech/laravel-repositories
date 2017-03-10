@@ -28,17 +28,17 @@ $app = new Illuminate\Foundation\Application(
 
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
-    Croud\RepositoriesTest\Http\Kernel::class
+    CroudTech\RepositoriesTest\Http\Kernel::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
-    Croud\Repositories\Console\Kernel::class
+    CroudTech\Repositories\Console\Kernel::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
-    Croud\Exceptions\Handler::class
+    CroudTech\Exceptions\Handler::class
 );
 
 /*

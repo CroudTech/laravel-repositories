@@ -1,6 +1,6 @@
 <?php
 
-namespace Croud\Repositories\Console;
+namespace CroudTech\Repositories\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;

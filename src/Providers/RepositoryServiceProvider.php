@@ -1,5 +1,5 @@
 <?php
-namespace Croud\Repositories\Providers;
+namespace CroudTech\Repositories\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

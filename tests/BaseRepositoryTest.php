@@ -1,10 +1,10 @@
 <?php
-namespace Croud\RepositoryTests;
+namespace CroudTech\RepositoryTests;
 
 use \Illuminate\Database\Capsule\Manager as Capsule;
-use \Croud\RepositoryTests\Models\User as UserModel;
-use \Croud\RepositoryTests\Repositories\Contracts\UserRepositoryContract;
-use \Croud\RepositoryTests\Repositories\UserRepository;
+use \CroudTech\RepositoryTests\Models\User as UserModel;
+use \CroudTech\RepositoryTests\Repositories\Contracts\UserRepositoryContract;
+use \CroudTech\RepositoryTests\Repositories\UserRepository;
 use \Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use \Illuminate\Pagination\AbstractPaginator as Paginator;
 use \Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -35,7 +35,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::query()
+     * @covers \CroudTech\Repositories\BaseRepository::query()
      */
     public function testQueryReturnsQueryBuilder()
     {
@@ -43,7 +43,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::all()
+     * @covers \CroudTech\Repositories\BaseRepository::all()
      */
     public function testAllMethodReturnsCollection()
     {
@@ -53,7 +53,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::all()
+     * @covers \CroudTech\Repositories\BaseRepository::all()
      */
     public function testAllMethodReturnsCorrectNumberOfRecords()
     {
@@ -62,7 +62,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::all()
+     * @covers \CroudTech\Repositories\BaseRepository::all()
      */
     public function testAllMethodReturnsCorrectNumberOfRecordsWithModifiedQuery()
     {
@@ -75,7 +75,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::clearQuery()
+     * @covers \CroudTech\Repositories\BaseRepository::clearQuery()
      */
     public function testClearQueryReturnsQueryBuilderInstance()
     {
@@ -84,7 +84,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::clearQuery()
+     * @covers \CroudTech\Repositories\BaseRepository::clearQuery()
      */
     public function testClearQueryClearsAllConstraints()
     {
@@ -99,7 +99,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::create()
+     * @covers \CroudTech\Repositories\BaseRepository::create()
      */
     public function testCreateReturnsCorrectObjectInstance()
     {
@@ -108,7 +108,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::create()
+     * @covers \CroudTech\Repositories\BaseRepository::create()
      */
     public function testCreateReturnsObjectWithCorrectData()
     {
@@ -117,7 +117,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::create()
+     * @covers \CroudTech\Repositories\BaseRepository::create()
      */
     public function testCreateObjectExistsInTheDatabase()
     {
@@ -127,7 +127,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::find()
+     * @covers \CroudTech\Repositories\BaseRepository::find()
      */
     public function testFind()
     {
@@ -138,7 +138,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers Croud\Repositories\BaseRepository::delete()
+     * @covers CroudTech\Repositories\BaseRepository::delete()
      */
     public function testDelete()
     {
@@ -149,7 +149,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::findBy()
+     * @covers \CroudTech\Repositories\BaseRepository::findBy()
      */
     public function testFindBy()
     {
@@ -160,7 +160,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::update()
+     * @covers \CroudTech\Repositories\BaseRepository::update()
      */
     public function testUpdate()
     {
@@ -172,7 +172,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::update()
+     * @covers \CroudTech\Repositories\BaseRepository::update()
      */
     public function testUpdateThrowsExceptionWhenNoRecordIsFound()
     {
@@ -182,7 +182,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::paginate()
+     * @covers \CroudTech\Repositories\BaseRepository::paginate()
      */
     public function testPaginateReturnsCorrectInstanceType()
     {
@@ -192,7 +192,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::paginate()
+     * @covers \CroudTech\Repositories\BaseRepository::paginate()
      */
     public function testPaginateReturnsCorrectNumberOfItems()
     {
@@ -202,7 +202,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::paginate()
+     * @covers \CroudTech\Repositories\BaseRepository::paginate()
      */
     public function testPaginateUsesRepositoryQueryConstraints()
     {
@@ -213,7 +213,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::simplePaginate()
+     * @covers \CroudTech\Repositories\BaseRepository::simplePaginate()
      */
     public function testSimplePaginateReturnsCorrectInstanceType()
     {
@@ -223,7 +223,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::simplePaginate()
+     * @covers \CroudTech\Repositories\BaseRepository::simplePaginate()
      */
     public function testSimplePaginateReturnsCorrectNumberOfItems()
     {
@@ -233,7 +233,7 @@ class BaseRepositoryTest extends TestCase
     }
 
     /**
-     * @covers \Croud\Repositories\BaseRepository::simplePaginate()
+     * @covers \CroudTech\Repositories\BaseRepository::simplePaginate()
      */
     public function testSimplePaginateUsesRepositoryQueryConstraints()
     {

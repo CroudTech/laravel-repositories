@@ -1,5 +1,5 @@
 <?php
-namespace Croud\RepositoryTests;
+namespace CroudTech\RepositoryTests;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 

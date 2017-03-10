@@ -1,5 +1,5 @@
 <?php
-namespace Croud\Repositories\Contracts;
+namespace CroudTech\Repositories\Contracts;
 
 interface RepositoryContract
 {

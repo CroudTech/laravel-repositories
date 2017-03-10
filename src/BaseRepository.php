@@ -1,8 +1,8 @@
 <?php
 
-namespace Croud\Repositories;
+namespace CroudTech\Repositories;
 
-use \Croud\Repositories\Contracts\RepositoryContract;
+use \CroudTech\Repositories\Contracts\RepositoryContract;
 use \Illuminate\Contracts\Container\Container as ContainerContract;
 use \Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use \Illuminate\Database\Eloquent\Model;
