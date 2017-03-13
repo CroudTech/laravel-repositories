@@ -28,7 +28,7 @@ $app = new Illuminate\Foundation\Application(
 
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
-    CroudTech\RepositoriesTest\Http\Kernel::class
+    CroudTech\RepositoryTest\Http\Kernel::class
 );
 
 $app->singleton(

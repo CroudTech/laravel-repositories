@@ -5,7 +5,7 @@ use CroudTech\Repositories\BaseRepository;
 use CroudTech\RepositoriesTests\Repositories\Contracts\UserRepositoryContract;
 use CroudTech\RepositoriesTests\Models\User;
 
-class UserRepository extends BaseRepository implements UserRepositoryContract
+class UserApiRepository extends BaseRepository implements UserRepositoryContract
 {
     /**
      * Return the model name for this repository
