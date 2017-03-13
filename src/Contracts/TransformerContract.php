@@ -5,5 +5,5 @@ use Illuminate\Database\Eloquent\Model;
 
 interface TransformerContract
 {
-    public function transform(Model $model);
+        
 }
