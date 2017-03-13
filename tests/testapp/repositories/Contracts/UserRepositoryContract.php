@@ -1,5 +1,5 @@
 <?php
-namespace CroudTech\RepositoryTests\Repositories\Contracts;
+namespace CroudTech\RepositoriesTests\Repositories\Contracts;
 
 interface UserRepositoryContract
 {

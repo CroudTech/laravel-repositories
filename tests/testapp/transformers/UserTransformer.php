@@ -1,5 +1,5 @@
 <?php
-namespace CroudTech\RepositoryTests\Transformers;
+namespace CroudTech\RepositoriesTests\Transformers;
 
 use \CroudTech\Repositories\Contracts\TransformerContract;
 
