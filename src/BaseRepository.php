@@ -59,12 +59,11 @@ abstract class BaseRepository implements RepositoryContract
      * Get all records that match the current criteria
      *
      * @method all
-     * @param  [type] $columns [description]
      * @return [type]          [description]
      */
-    public function all($columns = ['*']) : \Illuminate\Support\Collection
+    public function all() : \Illuminate\Support\Collection
     {
-        return $this->query->get($columns);
+        return $this->query->get();
     }
 
     /**

@@ -3,7 +3,7 @@ namespace CroudTech\Repositories\Contracts;
 
 interface RepositoryContract
 {
-    public function all($columns = ['*']);
+    public function all();
     public function create(array $data);
     public function delete($id);
     public function find($id);
