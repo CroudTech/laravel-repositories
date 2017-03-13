@@ -35,7 +35,7 @@ return [
      * UserController::class => UserRepositoryContract::class,
      * UserApiController::class => UserApiRepository::class,
      */
-    'controller_repositories' => [
+    'contextual_repositories' => [
 
     ],
 ];
