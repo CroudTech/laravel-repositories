@@ -1,10 +1,13 @@
 <?php
-namespace CroudTech\RepositoryTests;
+namespace CroudTech\RepositoriesTests;
 
 use \Illuminate\Database\Capsule\Manager as Capsule;
-use \CroudTech\RepositoryTests\Models\User as UserModel;
-use \CroudTech\RepositoryTests\Repositories\Contracts\UserRepositoryContract;
-use \CroudTech\RepositoryTests\Repositories\UserRepository;
+use \CroudTech\RepositoriesTests\Models\User as UserModel;
+use \CroudTech\RepositoriesTests\Repositories\Contracts\UserRepositoryContract;
+use \CroudTech\RepositoriesTests\Repositories\UserRepository;
+use \CroudTech\RepositoriesTests\Repositories\UserApiRepository;
+use \CroudTech\RepositoriesTests\Controllers\UserController;
+use \CroudTech\RepositoriesTests\Controllers\UserApiController;
 use \CroudTech\Repositories\Contracts\TransformerContract;
 use \Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use \Illuminate\Pagination\AbstractPaginator as Paginator;
@@ -28,11 +31,27 @@ class BaseRepositoryTest extends TestCase
      *
      * @method testProvider
      */
-    public function testProvider()
+    public function testDiInjectsCorrectRepository()
     {
         $repository = $this->app->make(UserRepositoryContract::class);
         $this->assertInstanceOf(UserRepositoryContract::class, $repository);
         $this->assertInstanceOf(UserRepository::class, $repository);
+    }
+
+    /**
+     * Test provider returns correct instance type
+     *
+     * @method testProvider
+     */
+    public function testContextualDiInjectsCorrectRepository()
+    {
+        $user_controller = $this->app->make(UserController::class);
+        $this->assertInstanceOf(UserRepositoryContract::class, $user_controller->repository);
+        $this->assertInstanceOf(UserRepository::class, $user_controller->repository);
+
+        $user_api_controller = $this->app->make(UserApiController::class);
+        $this->assertInstanceOf(UserRepositoryContract::class, $user_api_controller->repository);
+        $this->assertInstanceOf(UserApiRepository::class, $user_api_controller->repository);
     }
 
     /**
