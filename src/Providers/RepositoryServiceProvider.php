@@ -15,7 +15,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/config/repositories.php' => config_path('repositories.php'),
+            dirname(dirname(__DIR__)).'/config/repositories.php' => config_path('repositories.php'),
         ]);
 
         foreach (config('repositories.repositories', []) as $respository_contract => $repository) {
