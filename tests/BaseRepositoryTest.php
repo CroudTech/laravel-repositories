@@ -5,6 +5,7 @@ use \Illuminate\Database\Capsule\Manager as Capsule;
 use \CroudTech\RepositoryTests\Models\User as UserModel;
 use \CroudTech\RepositoryTests\Repositories\Contracts\UserRepositoryContract;
 use \CroudTech\RepositoryTests\Repositories\UserRepository;
+use \CroudTech\Repositories\Contracts\TransformerContract;
 use \Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use \Illuminate\Pagination\AbstractPaginator as Paginator;
 use \Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -241,5 +242,15 @@ class BaseRepositoryTest extends TestCase
         $repository = $this->app->make(UserRepositoryContract::class);
         $repository->query()->where('name', 'Test User 1');
         $this->assertEquals(1, $repository->simplePaginate(10)->count());
+    }
+
+    /**
+     * @covers \CroudTech\Repositories\BaseRepository::__construct()
+     * @covers \CroudTech\Repositories\BaseRepository::getTransformer()
+     * @covers \CroudTech\Repositories\BaseRepository::setTransformer()
+     */
+    public function testTransformerInjection() {
+        $repository = $this->app->make(UserRepositoryContract::class);
+        $this->assertInstanceOf(TransformerContract::class, $repository->getTransformer());
     }
 }

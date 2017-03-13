@@ -3,11 +3,13 @@
 namespace CroudTech\Repositories;
 
 use \CroudTech\Repositories\Contracts\RepositoryContract;
+use \CroudTech\Repositories\Contracts\TransformerContract;
 use \Illuminate\Contracts\Container\Container as ContainerContract;
 use \Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use \Illuminate\Database\Eloquent\Model;
 use \Illuminate\Pagination\AbstractPaginator as Paginator;
 use \Illuminate\Database\Eloquent\ModelNotFoundException;
+use \League\Fractal\Resource\ResourceInterface;
 
 abstract class BaseRepository implements RepositoryContract
 {
@@ -17,6 +19,13 @@ abstract class BaseRepository implements RepositoryContract
      * @var ContainerContract
      */
     private $container;
+
+    /**
+     * Transformer
+     *
+     * @var TransformerContract
+     */
+    private $transformer;
 
     /**
      * The query from this repositories Model
@@ -31,9 +40,10 @@ abstract class BaseRepository implements RepositoryContract
      * @method __construct
      * @param  ContainerContract $container The DI container
      */
-    public function __construct(ContainerContract $container)
+    public function __construct(ContainerContract $container, TransformerContract $transformer)
     {
         $this->container = $container;
+        $this->setTransformer($transformer);
         $this->init();
     }
 
@@ -171,6 +181,27 @@ abstract class BaseRepository implements RepositoryContract
     public function clearQuery() : QueryBuilder
     {
         return $this->makeQuery();
+    }
+
+    /**
+     * Get the injected transformer object
+     *
+     * @method getTransformer
+     * @return TransformerContract
+     */
+    public function getTransformer() : TransformerContract
+    {
+        return $this->transformer;
+    }
+
+    /**
+     * Set the transformer object
+     *
+     * @method setTransformer
+     */
+    public function setTransformer(TransformerContract  $transformer)
+    {
+        $this->transformer = $transformer;
     }
 
     /**
