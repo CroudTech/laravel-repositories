@@ -18,21 +18,21 @@ abstract class BaseRepository implements RepositoryContract
      *
      * @var ContainerContract
      */
-    private $container;
+    protected $container;
 
     /**
      * Transformer
      *
      * @var TransformerContract
      */
-    private $transformer;
+    protected $transformer;
 
     /**
      * The query from this repositories Model
      *
      * @var \Illuminate\Database\Query\Builder
      */
-    private $query;
+    protected $query;
 
     /**
      * Pass in the DI container
