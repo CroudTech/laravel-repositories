@@ -2,9 +2,10 @@
 namespace CroudTech\RepositoriesTests\Transformers;
 
 use \CroudTech\Repositories\Contracts\TransformerContract;
-use Illuminate\Database\Eloquent\Model;
+use \Illuminate\Database\Eloquent\Model;
+use \League\Fractal\TransformerAbstract;
 
-class UserTransformer implements TransformerContract
+class UserTransformer extends TransformerAbstract implements TransformerContract
 {
     public function transform(Model $user)
     {
