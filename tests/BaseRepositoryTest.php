@@ -9,12 +9,24 @@ use \CroudTech\RepositoriesTests\Repositories\UserApiRepository;
 use \CroudTech\RepositoriesTests\Controllers\UserController;
 use \CroudTech\RepositoriesTests\Controllers\UserApiController;
 use \CroudTech\Repositories\Contracts\TransformerContract;
+use \CroudTech\Repositories\Fractal;
 use \Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use \Illuminate\Pagination\AbstractPaginator as Paginator;
 use \Illuminate\Database\Eloquent\ModelNotFoundException;
+use \Mockery as m;
 
 class BaseRepositoryTest extends TestCase
 {
+    /**
+     * All tasks to reset the application state
+     *
+     * @method tearDown
+     */
+    public function tearDown()
+    {
+        m::close();
+    }
+
     /**
      * Load the user data for tests
      *
@@ -268,8 +280,52 @@ class BaseRepositoryTest extends TestCase
      * @covers \CroudTech\Repositories\BaseRepository::getTransformer()
      * @covers \CroudTech\Repositories\BaseRepository::setTransformer()
      */
-    public function testTransformerInjection() {
+    public function testTransformerInjection()
+    {
         $repository = $this->app->make(UserRepositoryContract::class);
         $this->assertInstanceOf(TransformerContract::class, $repository->getTransformer());
+    }
+
+    /**
+     * @covers \CroudTech\Repositories\BaseRepository::item()
+     * @group DEV
+     */
+    public function testFractalItem()
+    {
+        $this->loadUserData();
+        $repository = $this->app->make(UserRepositoryContract::class);
+        $request = m::mock(\Illuminate\Http\Request::class);
+        $request->shouldReceive('offsetExists');
+        $request->shouldReceive('route');
+        $fractal = new Fractal($request);
+        $item = $fractal->item($repository->query()->first(), $repository->getTransformer(), $repository->getModelName());
+
+        $this->assertInternalType('array', $item);
+        $this->assertArrayHasKey('data', $item);
+        $this->assertArrayHasKey('id', $item['data']);
+        $this->assertArrayHasKey('name', $item['data']);
+        $this->assertArrayHasKey('deleted_at', $item['data']);
+    }
+
+    /**
+     * @covers \CroudTech\Repositories\BaseRepository::collection()
+     * @group DEV
+     */
+    public function testFractalCollection()
+    {
+        $this->loadUserData();
+        $repository = $this->app->make(UserRepositoryContract::class);
+        $request = m::mock(\Illuminate\Http\Request::class);
+        $request->shouldReceive('offsetExists');
+        $request->shouldReceive('route');
+        $fractal = new Fractal($request);
+        $items = $fractal->collection($repository->all(), $repository->getTransformer(), $repository->getModelName());
+
+
+        $this->assertInternalType('array', $items);
+        $this->assertArrayHasKey('data', $items);
+        $this->assertArrayHasKey('id', last($items['data']));
+        $this->assertArrayHasKey('id', last($items['data']));
+        $this->assertArrayHasKey('deleted_at', last($items['data']));
     }
 }

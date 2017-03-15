@@ -119,8 +119,7 @@ abstract class BaseRepository implements RepositoryContract
         if ($record = $this->find($id)) {
             return $record->update($data);
         } else {
-            $model_class = $this->getModelName();
-            throw new ModelNotFoundException('Model not found for ID ' . $id . ' on table ' . (new $model_class)->getTable());
+            $this->throwModelNotFoundException($id);
         }
     }
 
@@ -133,7 +132,11 @@ abstract class BaseRepository implements RepositoryContract
      */
     public function delete($id)
     {
-        return $this->find($id)->delete();
+        if ($item = $this->find($id)) {
+            return $item->delete();
+        } else {
+            $this->throwModelNotFoundException($id);
+        }
     }
 
     /**
@@ -227,5 +230,16 @@ abstract class BaseRepository implements RepositoryContract
         }
 
         return $this->query = $model->newQuery();
+    }
+
+    /**
+     * Throw an exception when a model is not found
+     *
+     * @method throwModelNotFoundException
+     * @param  integer $id
+     */
+    protected function throwModelNotFoundException($id)
+    {
+        throw new ModelNotFoundException('Model not found for ID ' . $id . ' on table ' . $this->container->make($this->getModelName())->getTable());
     }
 }
