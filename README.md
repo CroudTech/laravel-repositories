@@ -1,6 +1,6 @@
 # laravel-repositories
 
-[![Build Status](https://travis-ci.org/jscrobinson/laravel-repositories.svg?branch=master)](https://travis-ci.org/jscrobinson/laravel-repositories)
+[![Build Status](https://travis-ci.org/CroudSupport/laravel-repositories.svg?branch=master)](https://travis-ci.org/CroudSupport/laravel-repositories)
 
 ## Use Repositories with the Laravel framework
 
