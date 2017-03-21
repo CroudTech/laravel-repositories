@@ -1,6 +1,13 @@
 # laravel-repositories
 
-[![Build Status](https://travis-ci.org/CroudSupport/laravel-repositories.svg?branch=master)](https://travis-ci.org/CroudSupport/laravel-repositories)
+<p align="left">
+    <a href="https://travis-ci.org/CroudSupport/laravel-repositories"><img src="https://travis-ci.org/CroudSupport/laravel-repositories.svg?branch=master"></a>
+    <a href="https://packagist.org/packages/croudtech/laravel-repositories"><img src="https://poser.pugx.org/croudtech/laravel-repositories/v/stable"></a>
+    <a href="https://packagist.org/packages/croudtech/laravel-repositories"><img src="https://poser.pugx.org/croudtech/laravel-repositories/v/unstable"></a>
+    <a href="https://packagist.org/packages/croudtech/laravel-repositories"><img src="https://poser.pugx.org/croudtech/laravel-repositories/composerlock"></a>
+    <a href="https://packagist.org/packages/croudtech/laravel-repositories"><img src="https://poser.pugx.org/croudtech/laravel-repositories/license"></a>
+    <a href="https://packagist.org/packages/croudtech/laravel-repositories"><img src="https://poser.pugx.org/croudtech/laravel-repositories/downloads"></a>
+</p>
 
 ## Use Repositories with the Laravel framework
 
