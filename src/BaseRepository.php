@@ -113,7 +113,7 @@ abstract class BaseRepository implements RepositoryContract
      * @method preCreate
      * @return $data
      */
-    protected function preCreate($data)
+    protected function preCreate($data) : array
     {
         return $data;
     }
@@ -126,7 +126,7 @@ abstract class BaseRepository implements RepositoryContract
      * @param  Model     $return_var The created model
      * @return Model                 Return the created model
      */
-    protected function postCreate($data, Model $record)
+    protected function postCreate($data, Model $record) : Model
     {
         return $record;
     }
@@ -139,7 +139,7 @@ abstract class BaseRepository implements RepositoryContract
      * @return boolean
      * @throws ModelNotFoundException
      */
-    public function update($id, array $data)
+    public function update($id, array $data) : bool
     {
         if ($record = $this->find($id)) {
             $data = $this->preUpdate($data, $id, $record);
@@ -159,7 +159,7 @@ abstract class BaseRepository implements RepositoryContract
      *
      * @return array The data to pass to the model
      */
-    protected function preUpdate($data, $id, $record)
+    protected function preUpdate($data, $id, $record) : array
     {
         return $data;
     }
@@ -175,7 +175,7 @@ abstract class BaseRepository implements RepositoryContract
      *
      * @return  Model         The updated model
      */
-    protected function postUpdate($data, $id, $return_var, Model $record)
+    protected function postUpdate($data, $id, $return_var, Model $record) : bool
     {
         return $return_var;
     }
@@ -207,7 +207,7 @@ abstract class BaseRepository implements RepositoryContract
      * @param  Model     $record The model
      * @return boolean   Return true to continue with delete or false to abort
      */
-    protected function preDelete($id, Model $record)
+    protected function preDelete($id, Model $record) : bool
     {
         return true;
     }
@@ -220,9 +220,9 @@ abstract class BaseRepository implements RepositoryContract
      * @param  boolean    $return_var The return var from the delete method on the model
      * @param  Model      $record     The model that was deleted
      *
-     * @return boolean The model that was deleted
+     * @return boolean
      */
-    protected function postDelete($id, $return_var, Model $record)
+    protected function postDelete($id, $return_var, Model $record) : bool
     {
         return $return_var;
     }
