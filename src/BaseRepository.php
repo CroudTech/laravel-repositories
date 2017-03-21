@@ -38,7 +38,7 @@ abstract class BaseRepository implements RepositoryContract
      * Pass in the DI container
      *
      * @method __construct
-     * @param  ContainerContract $container The DI container
+     * @param  ContainerContract        $container                  The DI container
      */
     public function __construct(ContainerContract $container, TransformerContract $transformer)
     {
@@ -64,19 +64,6 @@ abstract class BaseRepository implements RepositoryContract
     public function all() : \Illuminate\Support\Collection
     {
         return $this->query->get();
-    }
-
-    /**
-     * Create and return the model object
-     *
-     * @method create
-     * @param  array  $data array
-     * @return Model
-     */
-    public function create(array $data) : Model
-    {
-        $model_class = $this->getModelName();
-        return $model_class::create($data);
     }
 
     /**
@@ -107,6 +94,44 @@ abstract class BaseRepository implements RepositoryContract
     }
 
     /**
+     * Create and return the model object
+     *
+     * @method create
+     * @param  array  $data array
+     * @return Model
+     */
+    public function create(array $data) : Model
+    {
+        $model_class = $this->getModelName();
+        $data = $this->preCreate($data);
+        return $this->postCreate($data, $model_class::create($data));
+    }
+
+    /**
+     * Callback to modify data before creation
+     *
+     * @method preCreate
+     * @return $data
+     */
+    protected function preCreate($data)
+    {
+        return $data;
+    }
+
+    /**
+     * Callback to modify the created model after creation
+     *
+     * @method postCreate
+     * @param  array     $data       The data passed to the create method
+     * @param  Model     $return_var The created model
+     * @return Model                 Return the created model
+     */
+    protected function postCreate($data, Model $record)
+    {
+        return $record;
+    }
+
+    /**
      * Update a record
      *
      * @method update
@@ -117,33 +142,97 @@ abstract class BaseRepository implements RepositoryContract
     public function update($id, array $data)
     {
         if ($record = $this->find($id)) {
-            return $record->update($data);
+            $data = $this->preUpdate($data, $id, $record);
+            return $this->postUpdate($data, $id, $record->update($data), $record);
         } else {
             $this->throwModelNotFoundException($id);
         }
+    }
+
+    /**
+     * Callback to modify data before updating model
+     *
+     * @method preUpdate
+     * @param   array         $data             The array to pass to the model update method
+     * @param   integer       $id               The ID of the record
+     * @param   Model         $record           The model for updating
+     *
+     * @return array The data to pass to the model
+     */
+    protected function preUpdate($data, $id, $record)
+    {
+        return $data;
+    }
+
+    /**
+     * Callback to modify the created model after updating
+     *
+     * @method postUpdate
+     * @param   array         $data           The data passed to the update method
+     * @param   integer       $id             The ID specified for the updated object
+     * @param   boolean       $return_var     The return var from the update method
+     * @param   model         $record         The updated model
+     *
+     * @return  Model         The updated model
+     */
+    protected function postUpdate($data, $id, $return_var, Model $record)
+    {
+        return $return_var;
     }
 
     /**
      * Delete a record by ID
      *
      * @method delete
-     * @param  integer $id The ID of the record
+     * @param  integer          $id             The ID of the record
+     *
      * @return boolean
      */
     public function delete($id)
     {
-        if ($item = $this->find($id)) {
-            return $item->delete();
+        if ($record = $this->find($id)) {
+            if ($this->preDelete($id, $record)) {
+                return $this->postDelete($id, $record->delete(), $record);
+            }
         } else {
             $this->throwModelNotFoundException($id);
         }
     }
 
     /**
+     * Pre delete, return false to prevent deletion
+     *
+     * @method preDelete
+     * @param  [type]    $id     The ID of the record to be deleted
+     * @param  Model     $record The model
+     * @return boolean   Return true to continue with delete or false to abort
+     */
+    protected function preDelete($id, Model $record)
+    {
+        return true;
+    }
+
+    /**
+     * Post delete callback
+     *
+     * @method postDelete
+     * @param  integer    $id         The ID of the deleted record
+     * @param  boolean    $return_var The return var from the delete method on the model
+     * @param  Model      $record     The model that was deleted
+     *
+     * @return boolean The model that was deleted
+     */
+    protected function postDelete($id, $return_var, Model $record)
+    {
+        return $return_var;
+    }
+
+    /**
      * Standard Paginator
      *
      * @method paginate
-     * @param  integer  $perPage The number of items per page
+     * @param  integer          $perPage        The number of items per page
+     *
      * @return [type]            [description]
      */
     public function paginate($perPage = 20) : Paginator
