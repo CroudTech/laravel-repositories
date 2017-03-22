@@ -32,12 +32,12 @@ Add the repository definitions into your resources config file as follows:
 
 ```
 <?php
-use \CroudTech\RepositoriesTests\Repositories\Contracts\UserRepositoryContract;
-use \CroudTech\RepositoriesTests\Repositories\UserRepository;
-use \CroudTech\RepositoriesTests\Repositories\UserApiRepository;
-use \CroudTech\RepositoriesTests\Transformers\UserTransformer;
-use \CroudTech\RepositoriesTests\Controllers\UserController;
-use \CroudTech\RepositoriesTests\Controllers\UserApiController;
+use \CroudTech\Repositories\TestApp\Repositories\Contracts\UserRepositoryContract;
+use \CroudTech\Repositories\TestApp\Repositories\UserRepository;
+use \CroudTech\Repositories\TestApp\Repositories\UserApiRepository;
+use \CroudTech\Repositories\TestApp\Transformers\UserTransformer;
+use \CroudTech\Repositories\TestApp\Controllers\UserController;
+use \CroudTech\Repositories\TestApp\Controllers\UserApiController;
 
 return [
     'repositories' => [
@@ -70,7 +70,7 @@ For example to inject the UserRespsitory into a UserController:
 <?php
 namespace App\Controllers;
 
-use \CroudTech\RepositoriesTests\Repositories\Contracts\UserRepositoryContract;
+use \CroudTech\Repositories\TestApp\Repositories\Contracts\UserRepositoryContract;
 
 class UserController extends Controller
 {

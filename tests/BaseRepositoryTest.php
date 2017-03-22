@@ -1,13 +1,13 @@
 <?php
-namespace CroudTech\RepositoriesTests;
+namespace CroudTech\Repositories\Tests;
 
 use \Illuminate\Database\Capsule\Manager as Capsule;
-use \CroudTech\RepositoriesTests\Models\User as UserModel;
-use \CroudTech\RepositoriesTests\Repositories\Contracts\UserRepositoryContract;
-use \CroudTech\RepositoriesTests\Repositories\UserRepository;
-use \CroudTech\RepositoriesTests\Repositories\UserApiRepository;
-use \CroudTech\RepositoriesTests\Controllers\UserController;
-use \CroudTech\RepositoriesTests\Controllers\UserApiController;
+use \CroudTech\Repositories\TestApp\Models\User as UserModel;
+use \CroudTech\Repositories\TestApp\Repositories\Contracts\UserRepositoryContract;
+use \CroudTech\Repositories\TestApp\Repositories\UserRepository;
+use \CroudTech\Repositories\TestApp\Repositories\UserApiRepository;
+use \CroudTech\Repositories\TestApp\Controllers\UserController;
+use \CroudTech\Repositories\TestApp\Controllers\UserApiController;
 use \CroudTech\Repositories\Contracts\TransformerContract;
 use \CroudTech\Repositories\Fractal;
 use \Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -25,17 +25,6 @@ class BaseRepositoryTest extends TestCase
     public function tearDown()
     {
         m::close();
-    }
-
-    /**
-     * Load the user data for tests
-     *
-     * @method loadUserData
-     */
-    protected function loadUserData()
-    {
-        $data = include __DIR__.'/data/users.php';
-        Capsule::table('users')->insert($data);
     }
 
     /**
@@ -288,7 +277,7 @@ class BaseRepositoryTest extends TestCase
 
     /**
      * @covers \CroudTech\Repositories\BaseRepository::item()
-     * @group DEV
+     *
      */
     public function testFractalItem()
     {
@@ -309,7 +298,7 @@ class BaseRepositoryTest extends TestCase
 
     /**
      * @covers \CroudTech\Repositories\BaseRepository::collection()
-     * @group DEV
+     *
      */
     public function testFractalCollection()
     {
@@ -328,4 +317,6 @@ class BaseRepositoryTest extends TestCase
         $this->assertArrayHasKey('id', last($items['data']));
         $this->assertArrayHasKey('deleted_at', last($items['data']));
     }
+
+
 }

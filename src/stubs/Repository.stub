@@ -1,0 +1,16 @@
+<?php
+namespace %%NAMESPACE%%;
+
+class %%CLASS_NAME%% extends \CroudTech\Repositories\BaseRepository implements %%CONTRACT%%
+{
+    /**
+     * The model name used by this repository
+     *
+     * @method getModelName
+     * @return string
+     */
+    public function getModelName()
+    {
+        return %%MODEL_NAME%%::class;
+    }
+}

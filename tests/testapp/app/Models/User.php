@@ -1,5 +1,5 @@
 <?php
-namespace CroudTech\RepositoriesTests\Models;
+namespace CroudTech\Repositories\TestApp\Models;
 
 use \Illuminate\Database\Eloquent\Model;
 

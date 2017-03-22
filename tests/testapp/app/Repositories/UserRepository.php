@@ -1,9 +1,9 @@
 <?php
-namespace CroudTech\RepositoriesTests\Repositories;
+namespace CroudTech\Repositories\TestApp\Repositories;
 
 use CroudTech\Repositories\BaseRepository;
-use CroudTech\RepositoriesTests\Repositories\Contracts\UserRepositoryContract;
-use CroudTech\RepositoriesTests\Models\User;
+use CroudTech\Repositories\TestApp\Repositories\Contracts\UserRepositoryContract;
+use CroudTech\Repositories\TestApp\Models\User;
 
 class UserRepository extends BaseRepository implements UserRepositoryContract
 {
