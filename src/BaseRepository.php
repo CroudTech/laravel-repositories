@@ -150,30 +150,23 @@ abstract class BaseRepository implements RepositoryContract
     }
 
     /**
-     * Callback to modify data before updating model
+     * Callback to modify data before creation
      *
-     * @method preUpdate
-     * @param   array         $data             The array to pass to the model update method
-     * @param   integer       $id               The ID of the record
-     * @param   Model         $record           The model for updating
-     *
-     * @return array The data to pass to the model
+     * @method preCreate
+     * @return $data
      */
-    protected function preUpdate($data, $id, $record) : array
+    protected function preUpdate(array $data, $id, Model $record) : array
     {
         return $data;
     }
 
     /**
-     * Callback to modify the created model after updating
+     * Callback to modify the created model after creation
      *
-     * @method postUpdate
-     * @param   array         $data           The data passed to the update method
-     * @param   integer       $id             The ID specified for the updated object
-     * @param   boolean       $return_var     The return var from the update method
-     * @param   model         $record         The updated model
-     *
-     * @return  Model         The updated model
+     * @method postCreate
+     * @param  array     $data       The data passed to the create method
+     * @param  Model     $return_var The created model
+     * @return Model                 Return the created model
      */
     protected function postUpdate($data, $id, $return_var, Model $record) : bool
     {
