@@ -39,6 +39,10 @@ class RepositoryServiceProvider extends ServiceProvider
               ->needs(RepositoryContract::class)
               ->give($repository);
         }
+
+        $this->commands([
+            \CroudTech\Repositories\Console\Commands\CreateRepository::class,            
+        ]);
     }
 
     /**

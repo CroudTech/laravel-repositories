@@ -116,6 +116,9 @@ class RepositoryGenerator
             ],
             $this->contentsFromStub('Repository')
         );
+        if (!file_exists(dirname($full_path))) {
+            mkdir(dirname($full_path), 0755, true);
+        }
         file_put_contents($full_path, $contract_contents);
     }
 
@@ -146,6 +149,9 @@ class RepositoryGenerator
             ],
             $this->contentsFromStub('Contract')
         );
+        if (!file_exists(dirname($full_path))) {
+            mkdir(dirname($full_path), 0755, true);
+        }
         file_put_contents($full_path, $contract_contents);
     }
 
