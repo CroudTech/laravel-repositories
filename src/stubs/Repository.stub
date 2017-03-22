@@ -9,7 +9,7 @@ class %%CLASS_NAME%% extends \CroudTech\Repositories\BaseRepository implements %
      * @method getModelName
      * @return string
      */
-    public function getModelName()
+    public function getModelName() : string
     {
         return %%MODEL_NAME%%::class;
     }
