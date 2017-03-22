@@ -28,7 +28,7 @@ class CreateRepository extends Command
      */
     public function handle()
     {
-        $repository_generator = new \CroudTech\Repositories\RepositoryGenerator($this->argument('model-name', $this->argument('repository-name')));
+        $repository_generator = new \CroudTech\Repositories\RepositoryGenerator($this->argument('model-name'), $this->argument('repository-name'));
 
         try {
             if ($repository_generator->generateRepository()) {
