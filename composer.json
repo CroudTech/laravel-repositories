@@ -11,12 +11,8 @@
     "autoload": {
         "psr-4": {
             "CroudTech\\Repositories\\": "src/",
-            "CroudTech\\RepositoriesTests\\": "tests/",
-            "CroudTech\\RepositoriesTests\\Models\\": "tests/testapp/models",
-            "CroudTech\\RepositoriesTests\\Repositories\\": "tests/testapp/repositories",
-            "CroudTech\\RepositoriesTests\\Transformers\\": "tests/testapp/transformers",
-            "CroudTech\\RepositoriesTests\\Controllers\\": "tests/testapp/controllers",
-            "CroudTech\\RepositoriesTests\\Providers\\": "tests/testapp/providers"
+            "CroudTech\\Repositories\\TestApp\\": "tests/testapp/app/",        
+            "CroudTech\\Repositories\\Tests\\": "tests/"
         }
     },
     "require": {

@@ -2,6 +2,16 @@
 
 return [
     /**
+     * This path is used when generating repositories
+     */
+    'repositories_path' => app_path('Repositories'),
+
+    /**
+     * This path is used when generating repository contracts
+     */
+    'contracts_path' => app_path('Repositories/Contracts'),
+
+    /**
      * Register your repositories here as follows
      *
      * Interface => ConcreteClass

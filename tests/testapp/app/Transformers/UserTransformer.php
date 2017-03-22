@@ -1,5 +1,5 @@
 <?php
-namespace CroudTech\RepositoriesTests\Transformers;
+namespace CroudTech\Repositories\TestApp\Transformers;
 
 use \CroudTech\Repositories\Contracts\TransformerContract;
 use \Illuminate\Database\Eloquent\Model;
