@@ -1,22 +1,22 @@
 <?php return array (
-  'providers' => 
+  'providers' =>
   array (
     0 => 'Illuminate\\Cache\\CacheServiceProvider',
     1 => 'CroudTech\\Repositories\\Providers\\RepositoryServiceProvider',
   ),
-  'eager' => 
+  'eager' =>
   array (
     0 => 'CroudTech\\Repositories\\Providers\\RepositoryServiceProvider',
   ),
-  'deferred' => 
+  'deferred' =>
   array (
     'cache' => 'Illuminate\\Cache\\CacheServiceProvider',
     'cache.store' => 'Illuminate\\Cache\\CacheServiceProvider',
     'memcached.connector' => 'Illuminate\\Cache\\CacheServiceProvider',
   ),
-  'when' => 
+  'when' =>
   array (
-    'Illuminate\\Cache\\CacheServiceProvider' => 
+    'Illuminate\\Cache\\CacheServiceProvider' =>
     array (
     ),
   ),

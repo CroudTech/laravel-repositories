@@ -2,14 +2,20 @@
 
 namespace CroudTech\Repositories;
 
-use \CroudTech\Repositories\Contracts\RepositoryContract;
-use \CroudTech\Repositories\Contracts\TransformerContract;
-use \Illuminate\Contracts\Container\Container as ContainerContract;
-use \Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use \Illuminate\Database\Eloquent\Model;
-use \Illuminate\Pagination\AbstractPaginator as Paginator;
-use \Illuminate\Database\Eloquent\ModelNotFoundException;
-use \League\Fractal\Resource\ResourceInterface;
+use CroudTech\Repositories\Contracts\RepositoryContract;
+use CroudTech\Repositories\Contracts\TransformerContract;
+use Illuminate\Contracts\Container\Container as ContainerContract;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Pagination\AbstractPaginator as Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
+use League\Fractal\Manager as FractalManager;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
+use League\Fractal\Resource\ResourceInterface;
+use League\Fractal\Serializer\JsonApiSerializer;
 
 abstract class BaseRepository implements RepositoryContract
 {
@@ -35,16 +41,34 @@ abstract class BaseRepository implements RepositoryContract
     protected $query;
 
     /**
+     * The fractal manager object
+     *
+     * @var ractalManager
+     */
+    protected $fractal_manager;
+
+    /**
      * Pass in the DI container
      *
      * @method __construct
      * @param  ContainerContract        $container                  The DI container
      */
-    public function __construct(ContainerContract $container, TransformerContract $transformer)
+    public function __construct(ContainerContract $container, TransformerContract $transformer, FractalManager $fractal_manager)
     {
         $this->container = $container;
         $this->setTransformer($transformer);
+        $this->fractal_manager = $fractal_manager;
         $this->init();
+    }
+
+    /**
+     * Initialise the repository
+     *
+     * @method init
+     */
+    protected function init()
+    {
+        $this->makeQuery();
     }
 
     /**
@@ -283,19 +307,49 @@ abstract class BaseRepository implements RepositoryContract
      *
      * @method setTransformer
      */
-    public function setTransformer(TransformerContract  $transformer)
+    public function setTransformer(TransformerContract $transformer)
     {
         $this->transformer = $transformer;
     }
 
     /**
-     * Initialise the repository
+     * Pass a model through the transformer
      *
-     * @method init
+     * @method transformItem
+     * @param  Model                $item               The model to transform
+     * @param  array                $includes           Any transformer includes to use
+     * @param  TransformerContract  $transformer        Override the transformer
+     * @return array
      */
-    protected function init()
+    public function transformItem(Model $item, $includes = [], TransformerContract $transformer = null)
     {
-        $this->makeQuery();
+        $this->fractal_manager->parseIncludes($includes);
+        $transformer = is_null($transformer) ? $this->getTransformer() : $transformer;
+        $resource = new Item($item, $transformer, $this->getModelName());
+        return $this->fractal_manager->createData($resource)->toArray();
+    }
+
+    /**
+     * Fractal transform a collection
+     *
+     * @param object $items $items
+     * @param array                $includes           Any transformer includes to use
+     * @param string $transformer Namespaced Transformer
+     * @param string $model_name Model Name
+     * @return array
+     */
+    public function transformCollection($items, $includes = [], TransformerContract $transformer = null, $meta = [])
+    {
+        $this->fractal_manager->parseIncludes($includes);
+        $transformer = is_null($transformer) ? $this->getTransformer() : $transformer;
+        $resource = new Collection($items, $transformer, $this->getModelName());
+
+        $resource->setMeta($meta);
+        if ($items instanceof LengthAwarePaginator) {
+            $resource->setPaginator(new IlluminatePaginatorAdapter($items));
+        }
+
+        return $this->fractal_manager->createData($resource)->toArray();
     }
 
     /**

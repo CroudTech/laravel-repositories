@@ -9,5 +9,12 @@ class User extends Model
 
     protected $fillable = [
         'name',
+        'first_name',
+        'last_name',
     ];
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
 }

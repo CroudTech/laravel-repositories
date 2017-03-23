@@ -125,7 +125,7 @@ class BaseRepositoryTest extends TestCase
     public function testCreateReturnsCorrectObjectInstance()
     {
         $repository = $this->app->make(UserRepositoryContract::class);
-        $this->assertInstanceOf(UserModel::class, $repository->create(['name' => 'Test Name']));
+        $this->assertInstanceOf(UserModel::class, $repository->create(['name' => 'Test Name', 'first_name' => 'First Name', 'last_name' => 'Last Name']));
     }
 
     /**
@@ -134,7 +134,7 @@ class BaseRepositoryTest extends TestCase
     public function testCreateReturnsObjectWithCorrectData()
     {
         $repository = $this->app->make(UserRepositoryContract::class);
-        $this->assertEquals('Test Name', $repository->create(['name' => 'Test Name'])->name);
+        $this->assertEquals('Test Name', $repository->create(['name' => 'Test Name', 'first_name' => 'First Name', 'last_name' => 'Last Name'])->name);
     }
 
     /**
@@ -143,7 +143,7 @@ class BaseRepositoryTest extends TestCase
     public function testCreateObjectExistsInTheDatabase()
     {
         $repository = $this->app->make(UserRepositoryContract::class);
-        $repository->create(['name' => 'Test Name 123']);
+        $repository->create(['name' => 'Test Name 123', 'first_name' => 'First Name', 'last_name' => 'Last Name']);
         $this->assertInstanceOf(UserModel::class, UserModel::where('name', 'Test Name 123')->first());
     }
 
@@ -153,7 +153,7 @@ class BaseRepositoryTest extends TestCase
     public function testFind()
     {
         $repository = $this->app->make(UserRepositoryContract::class);
-        $record = $repository->create(['name' => 'Test Name 123']);
+        $record = $repository->create(['name' => 'Test Name 123', 'first_name' => 'First Name', 'last_name' => 'Last Name']);
         $this->assertInstanceOf(UserModel::class, $found_record = $repository->find($record->id));
         $this->assertEquals($record->name, $found_record->name);
     }
@@ -164,7 +164,7 @@ class BaseRepositoryTest extends TestCase
     public function testDelete()
     {
         $repository = $this->app->make(UserRepositoryContract::class);
-        $record = $repository->create(['name' => 'Test Name 123']);
+        $record = $repository->create(['name' => 'Test Name 123', 'first_name' => 'First Name', 'last_name' => 'Last Name']);
         $this->assertTrue($repository->delete($record->id));
         $this->assertNull($repository->find($record->id));
     }
@@ -175,7 +175,7 @@ class BaseRepositoryTest extends TestCase
     public function testFindBy()
     {
         $repository = $this->app->make(UserRepositoryContract::class);
-        $record = $repository->create(['name' => 'Test Name 123']);
+        $record = $repository->create(['name' => 'Test Name 123', 'first_name' => 'First Name', 'last_name' => 'Last Name']);
         $this->assertInstanceOf(UserModel::class, $found_record = $repository->findBy('name', $record->name));
         $this->assertEquals($record->name, $found_record->name);
     }
@@ -186,7 +186,7 @@ class BaseRepositoryTest extends TestCase
     public function testUpdate()
     {
         $repository = $this->app->make(UserRepositoryContract::class);
-        $record = $repository->create(['name' => 'Test Name 123']);
+        $record = $repository->create(['name' => 'Test Name 123', 'first_name' => 'First Name', 'last_name' => 'Last Name']);
         $this->assertTrue($repository->update($record->id, ['name' => 'Updated Name']));
         $updated_record = $repository->find($record->id);
         $this->assertEquals('Updated Name', $updated_record->name);
@@ -288,16 +288,14 @@ class BaseRepositoryTest extends TestCase
         $request->shouldReceive('route');
         $fractal = new Fractal($request);
         $item = $fractal->item($repository->query()->first(), $repository->getTransformer(), $repository->getModelName());
-
         $this->assertInternalType('array', $item);
         $this->assertArrayHasKey('data', $item);
-        $this->assertArrayHasKey('id', $item['data']);
-        $this->assertArrayHasKey('name', $item['data']);
-        $this->assertArrayHasKey('deleted_at', $item['data']);
+        $this->assertArrayHasKey('first_name', $item['data']);
+        $this->assertArrayHasKey('last_name', $item['data']);
     }
 
     /**
-     * @covers \CroudTech\Repositories\BaseRepository::collection()
+     * @covers \CroudTech\Repositories\Fractal::collection()
      *
      */
     public function testFractalCollection()
@@ -313,10 +311,93 @@ class BaseRepositoryTest extends TestCase
 
         $this->assertInternalType('array', $items);
         $this->assertArrayHasKey('data', $items);
-        $this->assertArrayHasKey('id', last($items['data']));
-        $this->assertArrayHasKey('id', last($items['data']));
-        $this->assertArrayHasKey('deleted_at', last($items['data']));
+        $this->assertArrayHasKey('first_name', last($items['data']));
+        $this->assertArrayHasKey('last_name', last($items['data']));
     }
 
+    /**
+     * @covers \CroudTech\Repositories\BaseRepository::transformItem()
+     *
+     * @method testTransformItem
+     * @return Test that an item can be transformed
+     */
+    public function testTransformItem()
+    {
+        $this->loadUserData();
+        $repository = $this->app->make(UserRepositoryContract::class);
+        $item = $repository->all()->first();
+        $transformed = $repository->transformItem($item);
 
+        $this->assertArrayHasKey('data', $transformed);
+        $this->assertArrayHasKey('first_name', $transformed['data']);
+        $this->assertArrayHasKey('last_name', $transformed['data']);
+        $this->assertFalse(isset($transformed['data']['name']));
+        $this->assertFalse(isset($transformed['data']['address']));
+    }
+
+    /**
+     * @covers \CroudTech\Repositories\BaseRepository::transformItem()
+     *
+     * @method testTransformItem
+     * @return Test that an item can be transformed
+     */
+    public function testTransformItemWithIncludes()
+    {
+        $this->loadUserData();
+        $repository = $this->app->make(UserRepositoryContract::class);
+        $item = $repository->all()->first();
+        $transformed = $repository->transformItem($item, ['address']);
+
+        $this->assertArrayHasKey('data', $transformed);
+        $this->assertArrayHasKey('first_name', $transformed['data']);
+        $this->assertArrayHasKey('last_name', $transformed['data']);
+        $this->assertArrayHasKey('address', $transformed['data']);
+        $this->assertArrayHasKey('data', $transformed['data']['address']);
+
+        // Check that the includes are cleared
+        $transformed = $repository->transformItem($item);
+        $this->assertFalse(isset($transformed['data']['address']));
+    }
+
+    /**
+     * @covers \CroudTech\Repositories\BaseRepository::transformCollection()
+     *
+     * @method testTransformItem
+     * @return Test that an item can be transformed
+     */
+    public function testTransformCollection()
+    {
+        $this->loadUserData();
+        $repository = $this->app->make(UserRepositoryContract::class);
+        $items = $repository->all();
+        $transformed = $repository->transformCollection($items);
+
+        $this->assertArrayHasKey('data', $transformed);
+        $this->assertArrayHasKey('first_name', last($transformed['data']));
+        $this->assertArrayHasKey('last_name', last($transformed['data']));
+    }
+
+    /**
+     * @covers \CroudTech\Repositories\BaseRepository::transformCollection()
+     *
+     * @method testTransformItem
+     * @return Test that an item can be transformed
+     */
+    public function testTransformCollectionWithIncludes()
+    {
+        $this->loadUserData();
+        $repository = $this->app->make(UserRepositoryContract::class);
+        $items = $repository->all();
+        $transformed = $repository->transformCollection($items, ['address']);
+
+
+        $this->assertArrayHasKey('data', $transformed);
+        $this->assertArrayHasKey('first_name', last($transformed['data']));
+        $this->assertArrayHasKey('last_name', last($transformed['data']));
+        $this->assertArrayHasKey('address', last($transformed['data']));
+        $this->assertArrayHasKey('data', last($transformed['data'])['address']);
+
+        $transformed = $repository->transformCollection($items);
+        $this->assertFalse(isset(last($transformed['data'])['address']));
+    }
 }
