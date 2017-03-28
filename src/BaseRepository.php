@@ -4,6 +4,7 @@ namespace CroudTech\Repositories;
 
 use CroudTech\Repositories\Contracts\RepositoryContract;
 use CroudTech\Repositories\Contracts\TransformerContract;
+use CroudTech\Repositories\Contracts\RequestTransformerContract;
 use Illuminate\Contracts\Container\Container as ContainerContract;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
@@ -127,8 +128,7 @@ abstract class BaseRepository implements RepositoryContract
     public function create(array $data) : Model
     {
         $model_class = $this->getModelName();
-        $data = $this->preCreate($data);
-        return $this->postCreate($data, $model_class::create($data));
+        return $this->postCreate($data, $model_class::create($this->preCreate($this->parseData($data))));
     }
 
     /**
@@ -166,7 +166,7 @@ abstract class BaseRepository implements RepositoryContract
     public function update($id, array $data) : bool
     {
         if ($record = $this->find($id)) {
-            $data = $this->preUpdate($data, $id, $record);
+            $data = $this->preUpdate($this->parseData($data), $id, $record);
             return $this->postUpdate($data, $id, $record->update($data), $record);
         } else {
             $this->throwModelNotFoundException($id);
@@ -278,6 +278,22 @@ abstract class BaseRepository implements RepositoryContract
     public function query() : QueryBuilder
     {
         return $this->query;
+    }
+
+    /**
+     * Parse the data using the 'request' method of the transformer if it exists
+     *
+     * @method parseData
+     * @param  array $data The data to parse
+     * @return array The parsed data
+     */
+    public function parseData(array $data) : array
+    {
+        if ($this->getTransformer() instanceof RequestTransformerContract) {
+            return $this->getTransformer()->request($data);
+        }
+
+        return $data;
     }
 
     /**

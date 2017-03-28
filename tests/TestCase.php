@@ -12,8 +12,11 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
      */
     protected function loadUserData()
     {
-        $data = include __DIR__.'/data/users.php';
-        Capsule::table('users')->insert($data);
+        $user_data = include __DIR__.'/data/users.php';
+        Capsule::table('users')->insert($user_data);
+
+        $product_data = include __DIR__.'/data/products.php';
+        Capsule::table('products')->insert($product_data);
 
         foreach (\CroudTech\Repositories\TestApp\Models\User::all() as $user) {
             $address = \CroudTech\Repositories\TestApp\Models\Address::create([
@@ -86,6 +89,15 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
             $table->increments('id');
             $table->string('email');
             $table->unsignedInteger('user_id');
+            $table->softDeletes();
+        });
+
+        $schema->dropIfExists('products');
+        $schema->create('products', function (\Illuminate\Database\Schema\Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('description');
+            $table->string('price');
             $table->softDeletes();
         });
     }
