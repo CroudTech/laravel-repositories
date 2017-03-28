@@ -290,7 +290,7 @@ abstract class BaseRepository implements RepositoryContract
     public function parseData(array $data) : array
     {
         if ($this->getTransformer() instanceof RequestTransformerContract) {
-            return $this->getTransformer()->request($data);
+            return $this->getTransformer()->transformRequestData($data);
         }
 
         return $data;
