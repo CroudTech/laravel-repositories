@@ -3,7 +3,9 @@ namespace CroudTech\Repositories\Tests;
 
 use \Illuminate\Database\Capsule\Manager as Capsule;
 use \CroudTech\Repositories\TestApp\Models\User as UserModel;
+use \CroudTech\Repositories\TestApp\Models\Product as ProductModel;
 use \CroudTech\Repositories\TestApp\Repositories\Contracts\UserRepositoryContract;
+use \CroudTech\Repositories\TestApp\Repositories\Contracts\ProductRepositoryContract;
 use \CroudTech\Repositories\TestApp\Repositories\UserRepository;
 use \CroudTech\Repositories\TestApp\Repositories\UserApiRepository;
 use \CroudTech\Repositories\TestApp\Controllers\UserController;
@@ -399,5 +401,86 @@ class BaseRepositoryTest extends TestCase
 
         $transformed = $repository->transformCollection($items);
         $this->assertFalse(isset(last($transformed['data'])['address']));
+    }
+
+    /**
+     * Test that the request() method of the transformer is used to transform the request array before use in the repository
+     *
+     * @covers \CroudTech\Repositories\BaseRepository::parseData()
+     * @group DEV
+     */
+    public function testParseData()
+    {
+        $data = [
+            'product_name' => 'Some product name',
+            'product_description' => 'Some product description',
+            'price' => 10.50,
+        ];
+        $repository = $this->app->make(ProductRepositoryContract::class);
+        $transformed = $repository->parseData($data);
+
+        $this->assertArrayHasKey('name', $transformed);
+        $this->assertArrayHasKey('description', $transformed);
+        $this->assertArrayHasKey('price', $transformed);
+
+        $this->assertEquals($data['product_name'], $transformed['name']);
+        $this->assertEquals($data['product_description'], $transformed['description']);
+        $this->assertEquals($data['price'], $transformed['price']);
+    }
+
+    /**
+     * Check that the create method uses the parseData method to transform the data before saving
+     *
+     * @covers \CroudTech\Repositories\BaseRepository::parseData()
+     * @covers \CroudTech\Repositories\BaseRepository::create()
+     */
+    public function testCreationOfObjectWithRequestTransformer()
+    {
+        $data = [
+            'product_name' => 'Some product name',
+            'product_description' => 'Some product description',
+            'price' => 10.50,
+        ];
+        $repository = $this->app->make(ProductRepositoryContract::class);
+        $product = $repository->create($data);
+
+        $this->assertArrayHasKey('name', $product->toArray());
+        $this->assertArrayHasKey('description', $product->toArray());
+        $this->assertArrayHasKey('price', $product->toArray());
+
+        $this->assertEquals($data['product_name'], $product->toArray()['name']);
+        $this->assertEquals($data['product_description'], $product->toArray()['description']);
+        $this->assertEquals($data['price'], $product->toArray()['price']);
+    }
+
+    /**
+     * Check that the create method uses the parseData method to transform the data before saving
+     *
+     * @covers \CroudTech\Repositories\BaseRepository::parseData()
+     * @covers \CroudTech\Repositories\BaseRepository::update()
+     */
+    public function testUpdateOfObjectWithRequestTransformer()
+    {
+        $product = ProductModel::create([
+            'name' => 'Original name',
+            'description' => 'Original description',
+            'price' => 5.99,
+        ]);
+        $data = [
+            'product_name' => 'Some product name',
+            'product_description' => 'Some product description',
+            'price' => 10.50,
+        ];
+        $repository = $this->app->make(ProductRepositoryContract::class);
+        $repository->update($product->id, $data);
+        $product = $product->fresh();
+
+        $this->assertArrayHasKey('name', $product->toArray());
+        $this->assertArrayHasKey('description', $product->toArray());
+        $this->assertArrayHasKey('price', $product->toArray());
+
+        $this->assertEquals($data['product_name'], $product->toArray()['name']);
+        $this->assertEquals($data['product_description'], $product->toArray()['description']);
+        $this->assertEquals($data['price'], $product->toArray()['price']);
     }
 }
