@@ -23,7 +23,7 @@ class ProductTransformer extends TransformerAbstract implements TransformerContr
      * @method transformIn
      * @return {[type]     [description]
      */
-    public function request(array $data) : array
+    public function transformRequestData(array $data) : array
     {
         $collection = collect($data);
         $modified_keys = $collection->keys()->map(function ($key) {
@@ -39,7 +39,7 @@ class ProductTransformer extends TransformerAbstract implements TransformerContr
                 break;
             }
         });
-        
+
         return $modified_keys->combine($collection)->toArray();
     }
 }

@@ -12,5 +12,5 @@ interface RequestTransformerContract
      * @param  array  $data The data to transform
      * @return array The transformed data
      */
-    public function request(array $data) : array;
+    public function transformRequestData(array $data) : array;
 }
