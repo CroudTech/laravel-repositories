@@ -375,13 +375,24 @@ abstract class BaseRepository implements RepositoryContract
      */
     protected function makeQuery() : QueryBuilder
     {
+        return $this->query = $this->newQuery();
+    }
+
+    /**
+     * Create a new query instance
+     *
+     * @method newQuery
+     * @return QueryBuilder [description]
+     */
+    public function newQuery() : QueryBuilder
+    {
         $model = $this->container->make($this->getModelName());
 
         if (!$model instanceof Model) {
             throw new RepositoryException("Class {$this->model()} must be an instance of " . Model::class);
         }
 
-        return $this->query = $model->newQuery();
+        return $model->newQuery();
     }
 
     /**
